@@ -53,9 +53,9 @@ const login=async(req,res=response)=>{
 
     try {
 
-        const usuarioDB=await Usuario.findOne({email});
-        if(usuarioDB){
-            const validPassword=bcrypt.compareSync(password,usuarioDB.password);
+        const usuario=await Usuario.findOne({email});
+        if(usuario){
+            const validPassword=bcrypt.compareSync(password,usuario.password);
             if(!validPassword){
                 return res.status(400).json({
                     ok:false,
@@ -64,11 +64,11 @@ const login=async(req,res=response)=>{
             }
 
             //generar el jwt porque todo has salido bien
-            const token=await generarJWT(usuarioDB.id);
+            const token=await generarJWT(usuario.id);
             
             res.json({
                 ok:true,
-                usuarioDB,
+                usuario,
                 token
             });
 
